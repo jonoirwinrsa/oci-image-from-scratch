@@ -9,7 +9,7 @@ all: image push verify
 
 out/hello: payload/main.go
 	mkdir -p out
-	CGO_ENABLED=0 GOOS=linux GOARCH=$(ARCH) go build -ldflags="-s -w" -o out/hello ./payload
+	CGO_ENABLED=0 GOOS=linux GOARCH=$(ARCH) go build -buildvcs=false -ldflags="-s -w" -o out/hello ./payload
 
 image: out/hello
 	go run . build -bin out/hello -out out/image -arch $(ARCH)

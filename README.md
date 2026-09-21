@@ -82,6 +82,11 @@ It falls out of two lines: fixed tar headers (zero mtime, no uname/gname) and a 
 timestamp in the config. Ordinary image builds embed the wall clock in both places, which is why
 identical inputs normally yield a different image ID every time.
 
+The payload needs `-buildvcs=false` to hold up. Go stamps the git revision — and a `dirty` flag —
+into any main package built inside a repository, so without it the image digest changes on every
+commit, and flips back and forth depending on whether you have an unsaved file open. The builder
+was deterministic the whole time; its input wasn't.
+
 ## The digest is not a checksum of anything useful
 
 Building this the first time, the gzip writer was closed *after* the buffer was read, so every
