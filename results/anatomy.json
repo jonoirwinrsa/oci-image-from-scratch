@@ -1,0 +1,41 @@
+{
+  "blobCount": 3,
+  "configJSON": {
+    "created": "1970-01-01T00:00:00Z",
+    "architecture": "arm64",
+    "os": "linux",
+    "config": {
+      "Entrypoint": [
+        "/hello"
+      ]
+    },
+    "rootfs": {
+      "type": "layers",
+      "diff_ids": [
+        "sha256:3f8714c3543c618a9d3bee6449475e8129ef31de52bed7c1c947a32d92ec6d55"
+      ]
+    }
+  },
+  "manifest": {
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "digest": "sha256:4f6573b2bf4def9210fb14ed2d67c807f8fc55c0f256a966853aa6d2b6466ba4",
+    "size": 404
+  },
+  "manifestJSON": {
+    "schemaVersion": 2,
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "config": {
+      "mediaType": "application/vnd.oci.image.config.v1+json",
+      "digest": "sha256:4c3ec8679a6f5808da847f1f7ba14fe336d01751579917115ebca92e47119022",
+      "size": 219
+    },
+    "layers": [
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:b8ee483797dccb8510c1fb7017f439d975c1a0347298c003e477d6911556d5f7",
+        "size": 666110
+      }
+    ]
+  },
+  "totalBytes": 666733
+}
