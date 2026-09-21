@@ -5,9 +5,9 @@ no Docker, no buildkit, no `go-containerregistry`.
 
 ```
 BLOB      DIGEST                                                                      BYTES
-manifest  sha256:4f6573b2bf4def9210fb14ed2d67c807f8fc55c0f256a966853aa6d2b6466ba4       404
-config    sha256:4c3ec8679a6f5808da847f1f7ba14fe336d01751579917115ebca92e47119022       219
-layer     sha256:b8ee483797dccb8510c1fb7017f439d975c1a0347298c003e477d6911556d5f7    666110
+manifest  sha256:144a69037b6b224171ebbe8f61dea52e61ce483a4c7dc97a20741cdbfada6bdd       404
+config    sha256:fdaff5e20c5f8aa5fbfa212c980a61ac6957bd5024a2b4a062ac8dc07829a96e       219
+layer     sha256:9df749ad3d20c94ef4b28464662f00eaec58c1946938f9ae84606f87011bad27    666200
 ```
 
 666 KB of that is the Go binary. The container format itself costs 623 bytes.
