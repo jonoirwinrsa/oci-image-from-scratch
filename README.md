@@ -49,9 +49,3 @@ name blobs that already exist. That ordering is why a half-pushed image can neve
 
 Builds are deterministic: fixed tar mtimes, a fixed `created` timestamp, and `-buildvcs=false` on
 the payload so Go doesn't stamp the git revision into it. Same input, same digest.
-
-## Why
-
-First of a series on container cold starts. Lazy pulling, chunked layers and nydus all come down
-to changing when the bytes in the layer blob arrive, which is hard to reason about until you can
-see that an image is addressable blobs behind an HTTP API.
