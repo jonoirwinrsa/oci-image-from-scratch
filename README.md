@@ -1,7 +1,8 @@
 # oci-image-from-scratch
 
-Builds a runnable container image and pushes it to a registry in 360 lines of Go, using nothing
-but the standard library. No Docker, no buildkit, no `go-containerregistry`.
+A container image builder in 362 lines of Go, standard library only. It writes the layer, config
+and manifest by hand and pushes them to a registry, with no Docker, buildkit or
+`go-containerregistry` involved.
 
 ```
 BLOB      DIGEST                                                                      BYTES
@@ -31,24 +32,28 @@ Also: `make image` (no daemon needed), `make explain`, `make down`, `make clean`
 
 ## What gets built
 
-**Layer.** A gzipped tar of the rootfs. One file, `/hello`, mode 0755. No base image, no libc and
-no shell, because a static binary needs none of them.
+The layer is a gzipped tar of the rootfs holding one file, `/hello`, mode 0755. There is no base
+image under it, and no libc or shell either, because a static binary needs neither.
 
-**Config.** Architecture, OS, entrypoint, and `rootfs.diff_ids`. A layer gets hashed twice: the
-manifest names the digest of the compressed layer, while `diff_ids` names the uncompressed tar.
-Swapping those is the most common way a hand-built image fails to run, and nothing tells you.
+The config carries architecture, OS, entrypoint and `rootfs.diff_ids`. A layer gets hashed twice
+here, which is the part worth slowing down for: the manifest names the digest of the compressed
+layer, while `diff_ids` names the uncompressed tar. Swapping the two is an easy way to get a
+broken image, and nothing tells you.
 
-**Manifest.** A `{mediaType, digest, size}` descriptor per blob. Its own digest is the image ID.
+The manifest is a `{mediaType, digest, size}` descriptor per blob, and its own digest is the
+image ID.
 
 All of it lands in an [OCI image layout](https://github.com/opencontainers/image-spec/blob/main/image-layout.md):
-`blobs/sha256/<hex>` files plus `index.json`. That directory is the image.
+`blobs/sha256/<hex>` files plus `index.json`, and that directory is the image.
 
 ## The push protocol
 
-`HEAD` the blob first and skip it if the registry already has those bytes, which is why re-pushing
-an unchanged base layer is instant. Otherwise `POST` an upload, then `PUT` the bytes with
-`?digest=` so the registry can verify them itself. The manifest goes last, because it may only
-name blobs that already exist. That ordering is why a half-pushed image can never be pulled.
+Every blob gets a `HEAD` first, and the upload is skipped when the registry already has those
+bytes, which is why re-pushing an unchanged base layer is instant. Otherwise it `POST`s an upload
+and then `PUT`s the bytes with `?digest=` so the registry can verify them itself. The manifest
+goes last, since it may only name blobs that already exist, which also means a half-pushed image
+can never be pulled.
 
-Builds are deterministic: fixed tar mtimes, a fixed `created` timestamp, and `-buildvcs=false` on
-the payload so Go doesn't stamp the git revision into it. Same input, same digest.
+Builds are deterministic, with fixed tar mtimes, a fixed `created` timestamp, and
+`-buildvcs=false` on the payload so Go doesn't stamp the git revision in. Two clean builds give
+the same digests.
