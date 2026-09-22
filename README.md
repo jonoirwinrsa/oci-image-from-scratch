@@ -12,6 +12,9 @@ layer     sha256:9df749ad3d20c94ef4b28464662f00eaec58c1946938f9ae84606f87011bad2
 
 666 KB of that is the Go binary. The container format itself costs 623 bytes.
 
+Those digests are from go1.26.1 targeting linux/arm64. Another toolchain or architecture gives
+different ones, just as deterministically.
+
 ## Run it
 
 ```sh
